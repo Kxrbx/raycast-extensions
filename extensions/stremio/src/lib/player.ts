@@ -113,9 +113,9 @@ export function normalizeTrackers(sources?: string[]): string[] | undefined {
 
 /**
  * Asks the local streaming server to start a torrent session so that
- * `/{infoHash}/{fileIdx}` becomes streamable. Returns the file index the
- * server picked when we had none, otherwise `null` on any failure (the
- * stream URL may still work through DHT/PEX).
+ * `/{infoHash}/{fileIdx}` becomes streamable. Returns the resolved file index
+ * (from the addon, or guessed by the server), or null when unknown — the
+ * stream route accepts `-1` for server-side guessed selection.
  */
 export async function ensureStreamSession(
   infoHash: string,
@@ -123,10 +123,12 @@ export async function ensureStreamSession(
 ): Promise<number | null> {
   const base = serverBaseUrl();
   const knownIndex = typeof options?.fileIdx === "number" ? options.fileIdx : undefined;
-  const payload: Record<string, unknown> = { guessFileIdx: knownIndex === undefined };
+  // stremio-runtime contract: trackers are passed as "announce" and
+  // guessFileIdx is a name fragment; any provided value enables file guessing.
+  const payload: Record<string, unknown> = { guessFileIdx: "video" };
   const trackers = normalizeTrackers(options?.sources);
   if (trackers) {
-    payload.trackers = trackers;
+    payload.announce = trackers;
   }
   try {
     const response = await fetch(`${base}/${encodeURIComponent(infoHash)}/create`, {
@@ -135,10 +137,21 @@ export async function ensureStreamSession(
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(options?.timeoutMs ?? 5000),
     });
-    if (response.ok && knownIndex === undefined) {
-      const json = (await response.json()) as Partial<{ fileIdx: number; selectedFileIdx: number }>;
-      const guessed = typeof json.selectedFileIdx === "number" ? json.selectedFileIdx : json.fileIdx;
-      return typeof guessed === "number" ? guessed : null;
+    if (response.ok) {
+      const stats = (await response.json()) as Partial<{
+        guessedFileIdx: number;
+        selectedFileIdx: number;
+        fileIdx: number;
+      }>;
+      const guessed =
+        typeof stats.guessedFileIdx === "number"
+          ? stats.guessedFileIdx
+          : typeof stats.selectedFileIdx === "number"
+            ? stats.selectedFileIdx
+            : stats.fileIdx;
+      if (typeof guessed === "number" && guessed >= 0) {
+        return guessed;
+      }
     }
   } catch {
     // Server unavailable or session already exists — proceed with what we know.
@@ -147,7 +160,8 @@ export async function ensureStreamSession(
 }
 
 export function streamHttpUrl(infoHash: string, fileIdx?: number): string {
-  const index = typeof fileIdx === "number" ? fileIdx : 0;
+  // `-1` asks the server for its guessed video file — safer than assuming 0.
+  const index = typeof fileIdx === "number" ? fileIdx : -1;
   return `${serverBaseUrl()}/${encodeURIComponent(infoHash)}/${index}`;
 }
 
@@ -207,7 +221,7 @@ export async function playInExternalPlayer(stream: ResolvedStream): Promise<Laun
   let url = directUrl ?? "";
   if (infoHash) {
     const fileIdx = await ensureStreamSession(infoHash, { fileIdx: stream.fileIdx, sources: stream.sources });
-    url = streamHttpUrl(infoHash, fileIdx ?? stream.fileIdx ?? 0);
+    url = streamHttpUrl(infoHash, fileIdx ?? undefined);
   }
 
   const player = resolvePlayer(options);

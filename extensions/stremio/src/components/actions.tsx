@@ -65,7 +65,7 @@ export function CopyStreamUrlAction({ stream }: { stream: ResolvedStream }) {
   if (!infoHash && !stream.url?.startsWith("http")) {
     return null;
   }
-  const url = infoHash ? streamHttpUrl(infoHash, stream.fileIdx ?? 0) : (stream.url as string);
+  const url = infoHash ? streamHttpUrl(infoHash, stream.fileIdx) : (stream.url as string);
   return <Action.CopyToClipboard title="Copy Stream URL" content={url} icon={Icon.Link} />;
 }
 
