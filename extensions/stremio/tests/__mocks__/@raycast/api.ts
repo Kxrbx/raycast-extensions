@@ -18,7 +18,11 @@ export const Icon = {
   Tv: "tv",
 };
 export const Toast = { Style: { Success: 0, Failure: 1 } };
-export const getPreferenceValues = (): Record<string, unknown> => ({});
+export let preferenceValues: Record<string, unknown> = {};
+export function setPreferenceValues(values: Record<string, unknown>) {
+  preferenceValues = values;
+}
+export const getPreferenceValues = (): Record<string, unknown> => preferenceValues;
 export const open = vi.fn().mockResolvedValue(undefined);
 export const showToast = vi.fn().mockResolvedValue(undefined);
 export class Cache {

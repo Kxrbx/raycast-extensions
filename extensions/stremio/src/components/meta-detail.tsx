@@ -4,7 +4,7 @@ import { getMetaDetail } from "../lib/cinemeta";
 import { buildHeroMarkdown, formatReleaseDate } from "../lib/markdown";
 import { detailDeepLink, imdbUrl } from "../lib/stremio";
 import { formatBytes } from "../lib/formatters";
-import { resolveStreams } from "../lib/addons";
+import { resolveStreams, getAdditionalManifestUrls } from "../lib/addons";
 import type { ContentType, MetaDetail, MetaPreview, ResolvedStream, Video } from "../lib/types";
 import {
   ConfigureExtensionAction,
@@ -167,27 +167,36 @@ export function MetaDetailView({ preview, episodeId }: MetaDetailViewProps) {
             </List.Section>
           )}
 
-          {streams?.length === 0 && !error && (
-            <List.Section title={episodeId ? "Episode streams" : "Streams"}>
-              <List.Item
-                icon={Icon.Plus}
-                title="No streams available"
-                subtitle="Add a stream addon manifest in the extension settings"
-                actions={
-                  <ActionPanel>
-                    <Action
-                      title="Open Extension Settings"
-                      icon={Icon.Gear}
-                      shortcut={{ modifiers: ["ctrl"], key: "k" }}
-                      onAction={() => openExtensionPreferences()}
-                    />
-                    <OpenImdbAction id={preview.id} />
-                    <ConfigureExtensionAction />
-                  </ActionPanel>
-                }
-              />
-            </List.Section>
-          )}
+          {streams?.length === 0 &&
+            !error &&
+            (() => {
+              const addonCount = getAdditionalManifestUrls().length;
+              return (
+                <List.Section title={episodeId ? "Episode streams" : "Streams"}>
+                  <List.Item
+                    icon={Icon.Plus}
+                    title="No streams available"
+                    subtitle={
+                      addonCount === 0
+                        ? "No stream addon configured \u2014 open the extension settings to add one"
+                        : `${addonCount} addon${addonCount > 1 ? "s" : ""} configured \u2014 none returned streams for this title`
+                    }
+                    actions={
+                      <ActionPanel>
+                        <Action
+                          title="Open Extension Settings"
+                          icon={Icon.Gear}
+                          shortcut={{ modifiers: ["ctrl"], key: "k" }}
+                          onAction={() => openExtensionPreferences()}
+                        />
+                        <OpenImdbAction id={preview.id} />
+                        <ConfigureExtensionAction />
+                      </ActionPanel>
+                    }
+                  />
+                </List.Section>
+              );
+            })()}
         </>
       )}
     </List>

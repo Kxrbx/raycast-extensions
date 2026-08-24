@@ -28,7 +28,7 @@ Search movies & series, browse catalogs and play streams from your Stremio setup
 
 1. Install the extension and open **Search Movies & Series**.
 2. If your Stremio streaming server does not run on the default `127.0.0.1:11470`, adjust the host/port in the extension preferences (press `Ctrl K` → *Configure Extension* from anywhere in the extension).
-3. Optional: add Stremio addon manifest URLs (comma-separated) in *Additional Addon Manifests* to merge your own catalogs and stream sources alongside the built-in Cinemeta catalogs. Adding the manifest of a stream addon enables playback.
+3. Optional: paste the manifest URL of a Stremio addon into one of the four **Stream Addon** slots in the extension settings (press `Ctrl K` → *Configure Extension*). Catalogs and streams are merged with the built-ins — adding a stream addon enables playback. Need more? Use the advanced comma-separated field.
 
 ## Preferences
 
@@ -42,7 +42,8 @@ Search movies & series, browse catalogs and play streams from your Stremio setup
 | Custom Player Path | Executable path used when Preferred Player is set to *Custom*. |
 | Player Arguments | Extra arguments appended before the stream URL. |
 | Default Playback Action | Whether Enter plays in the external player or opens Stremio. |
-| Additional Addon Manifests | Comma-separated Stremio addon manifest URLs. |
+| Stream Addon 1–4 | Manifest URLs of your Stremio addons (catalogs + streams merged with the built-ins). |
+| More Addon Manifests (advanced) | Comma-separated manifest URLs, if you need more than four slots. |
 
 ## Shortcuts
 

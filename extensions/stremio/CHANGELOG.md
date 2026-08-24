@@ -9,4 +9,5 @@
 - Stream resolution via the Stremio addons you configure (Cinemeta built-in for catalogs) with playback in VLC, mpv or a custom player through the local Stremio streaming server.
 - Quick navigation to Stremio pages and server dashboard.
 - Menu bar status for the local Stremio streaming server (connection, speed, peers, progress).
+- Addon management in the extension settings: four dedicated Stream Addon slots plus an advanced comma-separated field, with per-title feedback when no streams are returned.
 - `Ctrl K` opens extension preferences from anywhere in the extension.

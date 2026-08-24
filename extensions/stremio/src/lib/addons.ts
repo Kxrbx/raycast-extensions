@@ -54,12 +54,35 @@ function baseUrlFromManifestUrl(manifestUrl: string): string {
  * Built-in catalog addons shipped with the extension (Cinemeta), plus any extra
  * manifest URLs the user added in the preferences — including stream addons.
  */
+const ADDON_SLOT_COUNT = 4;
+
+/**
+ * Every additional manifest URL configured in the extension settings: the four
+ * dedicated addon slots plus the legacy comma-separated field, deduplicated.
+ */
+export function getAdditionalManifestUrls(): string[] {
+  const prefs = getPreferenceValues<Record<string, string | undefined>>();
+  const raw = [
+    ...Array.from({ length: ADDON_SLOT_COUNT }, (_, index) => prefs[`addonManifest${index + 1}`] ?? ""),
+    prefs.addonManifests ?? "",
+  ];
+  const seen = new Set<string>();
+  const urls: string[] = [];
+  for (const entry of raw) {
+    for (const candidate of entry.split(",")) {
+      const url = candidate.trim();
+      if (!url || seen.has(url.toLowerCase())) {
+        continue;
+      }
+      seen.add(url.toLowerCase());
+      urls.push(url);
+    }
+  }
+  return urls;
+}
+
 export async function getConfiguredManifestUrls(): Promise<string[]> {
-  const { addonManifests } = getPreferenceValues<{ addonManifests?: string }>();
-  const extra = (addonManifests ?? "")
-    .split(",")
-    .map((url) => url.trim())
-    .filter(Boolean);
+  const extra = getAdditionalManifestUrls();
   const seen = new Set<string>([CINEMETA_MANIFEST_URL, ...extra]);
   return [...seen];
 }

@@ -129,11 +129,39 @@
       ]
     },
     {
+      "name": "addonManifest1",
+      "type": "textfield",
+      "required": false,
+      "title": "Stream Addon 1",
+      "description": "Manifest URL of a Stremio addon providing streams, e.g. https://my-addon.example.com/manifest.json"
+    },
+    {
+      "name": "addonManifest2",
+      "type": "textfield",
+      "required": false,
+      "title": "Stream Addon 2",
+      "description": "Manifest URL of an extra Stremio addon (catalogs and streams are merged with the built-ins)."
+    },
+    {
+      "name": "addonManifest3",
+      "type": "textfield",
+      "required": false,
+      "title": "Stream Addon 3",
+      "description": "Manifest URL of an extra Stremio addon (catalogs and streams are merged with the built-ins)."
+    },
+    {
+      "name": "addonManifest4",
+      "type": "textfield",
+      "required": false,
+      "title": "Stream Addon 4",
+      "description": "Manifest URL of an extra Stremio addon (catalogs and streams are merged with the built-ins)."
+    },
+    {
       "name": "addonManifests",
       "type": "textfield",
       "required": false,
-      "title": "Additional Addon Manifests",
-      "description": "Comma-separated Stremio addon manifest URLs to merge alongside the built-in Cinemeta catalogs. Stream addons added here enable playback."
+      "title": "More Addon Manifests (advanced)",
+      "description": "Comma-separated manifest URLs, if you need more than the four slots above."
     }
   ],
   "dependencies": {
