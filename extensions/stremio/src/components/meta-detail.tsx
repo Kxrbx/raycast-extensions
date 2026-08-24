@@ -1,4 +1,4 @@
-﻿import { Action, ActionPanel, Icon, List } from "@raycast/api";
+﻿import { Action, ActionPanel, Icon, List, openExtensionPreferences } from "@raycast/api";
 import { useEffect, useMemo, useState } from "react";
 import { getMetaDetail } from "../lib/cinemeta";
 import { buildHeroMarkdown, formatReleaseDate } from "../lib/markdown";
@@ -168,10 +168,25 @@ export function MetaDetailView({ preview, episodeId }: MetaDetailViewProps) {
           )}
 
           {streams?.length === 0 && !error && (
-            <List.EmptyView
-              title="No streams available"
-              description="Add a stream addon manifest in the extension preferences (Ctrl+K)."
-            />
+            <List.Section title={episodeId ? "Episode streams" : "Streams"}>
+              <List.Item
+                icon={Icon.Plus}
+                title="No streams available"
+                subtitle="Add a stream addon manifest in the extension settings"
+                actions={
+                  <ActionPanel>
+                    <Action
+                      title="Open Extension Settings"
+                      icon={Icon.Gear}
+                      shortcut={{ modifiers: ["ctrl"], key: "k" }}
+                      onAction={() => openExtensionPreferences()}
+                    />
+                    <OpenImdbAction id={preview.id} />
+                    <ConfigureExtensionAction />
+                  </ActionPanel>
+                }
+              />
+            </List.Section>
           )}
         </>
       )}
