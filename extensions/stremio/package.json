@@ -1,0 +1,172 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "stremio",
+  "title": "Stremio",
+  "description": "Search movies & series, browse catalogs and control the Stremio app running on this computer",
+  "icon": "icon.png",
+  "author": "Kxrbx",
+  "categories": ["Media"],
+  "license": "MIT",
+  "version": "1.0.0",
+  "commands": [
+    {
+      "name": "search-stremio",
+      "title": "Search Movies & Series",
+      "description": "Search movies and series and open them directly in Stremio",
+      "mode": "view"
+    },
+    {
+      "name": "browse-stremio",
+      "title": "Browse Catalogs",
+      "description": "Browse popular, new and featured movies & series from your Stremio catalogs",
+      "mode": "view"
+    },
+    {
+      "name": "quick-navigation",
+      "title": "Quick Navigation",
+      "description": "Jump straight to Board, Library, Discover, Calendar or Addons in Stremio, or open a search query in it",
+      "mode": "view",
+      "arguments": [
+        {
+          "name": "query",
+          "placeholder": "Query to search in Stremio (optional)",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "stremio-status",
+      "title": "Server Status",
+      "description": "Show the connection status of the local Stremio streaming server",
+      "mode": "menu-bar"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "serverHost",
+      "type": "textfield",
+      "required": false,
+      "title": "Streaming Server Host",
+      "description": "Host of the Stremio streaming server running on this computer.",
+      "default": "127.0.0.1"
+    },
+    {
+      "name": "serverPort",
+      "type": "textfield",
+      "required": false,
+      "title": "Streaming Server Port",
+      "description": "Port of the Stremio streaming server running on this computer.",
+      "default": "11470"
+    },
+    {
+      "name": "defaultContentType",
+      "type": "dropdown",
+      "required": false,
+      "title": "Default Content Type",
+      "description": "Content type selected by default when searching and browsing.",
+      "default": "all",
+      "data": [
+        { "title": "All", "value": "all" },
+        { "title": "Movies", "value": "movie" },
+        { "title": "Series", "value": "series" }
+      ]
+    },
+    {
+      "name": "galleryColumns",
+      "type": "dropdown",
+      "required": false,
+      "title": "Gallery Columns",
+      "description": "Number of poster columns displayed in the catalog gallery.",
+      "default": "5",
+      "data": [
+        { "title": "3 - Very large posters", "value": "3" },
+        { "title": "4 - Large posters", "value": "4" },
+        { "title": "5 - Medium posters", "value": "5" },
+        { "title": "6 - Small posters", "value": "6" },
+        { "title": "7 - Compact posters", "value": "7" },
+        { "title": "8 - Tiny posters", "value": "8" }
+      ]
+    },
+    {
+      "name": "preferredPlayer",
+      "type": "dropdown",
+      "required": false,
+      "title": "Preferred Player",
+      "description": "Video player used to play Stremio streams directly from Raycast.",
+      "default": "vlc",
+      "data": [
+        { "title": "VLC", "value": "vlc" },
+        { "title": "mpv", "value": "mpv" },
+        { "title": "Auto (VLC then mpv)", "value": "system" },
+        { "title": "Custom …", "value": "custom" }
+      ]
+    },
+    {
+      "name": "customPlayerPath",
+      "type": "textfield",
+      "required": false,
+      "title": "Custom Player Path",
+      "description": "Path to the player executable, used when Preferred Player is set to Custom."
+    },
+    {
+      "name": "playerArguments",
+      "type": "textfield",
+      "required": false,
+      "title": "Player Arguments",
+      "description": "Extra arguments appended before the stream URL (e.g. --no-video-title-show)."
+    },
+    {
+      "name": "primaryAction",
+      "type": "dropdown",
+      "required": false,
+      "title": "Default Playback Action",
+      "description": "Action performed when selecting a title or stream (Enter).",
+      "default": "external-player",
+      "data": [
+        { "title": "Play in external player", "value": "external-player" },
+        { "title": "Open in Stremio", "value": "stremio" }
+      ]
+    },
+    {
+      "name": "addonManifests",
+      "type": "textfield",
+      "required": false,
+      "title": "Additional Addon Manifests",
+      "description": "Comma-separated addon manifest URLs to merge alongside the built-in Cinemeta and Torrentio catalogs."
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.16",
+    "@raycast/utils": "^2.3.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.1.1",
+    "@types/node": "^25.3.0",
+    "@types/react": "^19.2.14",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.9.3",
+    "vitest": "^3.0.0"
+  },
+  "scripts": {
+    "build": "ray build",
+    "build:import": "ray build -t release -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "publish": "npx @raycast/api@latest publish"
+  },
+  "keywords": [
+    "stremio",
+    "movies",
+    "series",
+    "tv shows",
+    "streaming",
+    "watch",
+    "catalog",
+    "search"
+  ]
+}
