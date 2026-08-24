@@ -22,19 +22,19 @@ describe("addon stream parsing", () => {
     expect(parseProvider("nothing")).toBe(null);
   });
 
-  it("enrichStream normalises a Torrentio-style torrent stream", () => {
+  it("enrichStream normalises a torrent-style stream", () => {
     const raw: StreamObject = {
-      name: "Torrentio\n4k HDR",
+      name: "Stream Addon\n4k HDR",
       title: "Dune.2021.2160p.HMAX.WEB-DL.DDP5.1.Atmos.HDR.HEVC-EVO[TGx]\n?? 231 ?? 20.32 GB ?? ThePirateBay",
       infoHash: "799DBC6AF33A8F32BF1406DC2EC68BBB6864AFFB",
       fileIdx: 0,
       behaviorHints: {
-        bingeGroup: "torrentio|4k|WEB-DL|hevc|HDR",
+        bingeGroup: "stream-addon|4k|WEB-DL|hevc|HDR",
         filename: "Dune.2021...HEVC-EVO.mkv",
       },
     };
-    const enriched = enrichStream("Torrentio", raw);
-    expect(enriched.sourceAddon).toBe("Torrentio");
+    const enriched = enrichStream("Stream Addon", raw);
+    expect(enriched.sourceAddon).toBe("Stream Addon");
     expect(enriched.quality).toBe("4k");
     expect(enriched.seeders).toBe(231);
     expect(enriched.provider).toBe("ThePirateBay");

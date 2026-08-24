@@ -133,7 +133,7 @@
       "type": "textfield",
       "required": false,
       "title": "Additional Addon Manifests",
-      "description": "Comma-separated addon manifest URLs to merge alongside the built-in Cinemeta and Torrentio catalogs."
+      "description": "Comma-separated Stremio addon manifest URLs to merge alongside the built-in Cinemeta catalogs. Stream addons added here enable playback."
     }
   ],
   "dependencies": {

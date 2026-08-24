@@ -2,7 +2,6 @@ import { Cache, getPreferenceValues } from "@raycast/api";
 import type { AddonManifestInfo, ResolvedStream, StreamObject } from "./types";
 
 const CINEMETA_MANIFEST_URL = "https://v3-cinemeta.strem.io/manifest.json";
-const TORRENTIO_MANIFEST_URL = "https://torrentio.strem.fun/manifest.json";
 
 const MANIFEST_CACHE_TTL_SECONDS = 24 * 60 * 60;
 const STREAM_CACHE_TTL_SECONDS = 60;
@@ -52,8 +51,8 @@ function baseUrlFromManifestUrl(manifestUrl: string): string {
 }
 
 /**
- * Built-in catalog/stream addons shipped with the extension, plus any extra
- * manifest URLs the user added in the preferences.
+ * Built-in catalog addons shipped with the extension (Cinemeta), plus any extra
+ * manifest URLs the user added in the preferences — including stream addons.
  */
 export async function getConfiguredManifestUrls(): Promise<string[]> {
   const { addonManifests } = getPreferenceValues<{ addonManifests?: string }>();
@@ -61,13 +60,13 @@ export async function getConfiguredManifestUrls(): Promise<string[]> {
     .split(",")
     .map((url) => url.trim())
     .filter(Boolean);
-  const seen = new Set<string>([CINEMETA_MANIFEST_URL, TORRENTIO_MANIFEST_URL, ...extra]);
+  const seen = new Set<string>([CINEMETA_MANIFEST_URL, ...extra]);
   return [...seen];
 }
 
 /**
- * Loads every configured addon manifest (cached). Cinemeta and a public Torrentio
- * instance ship by default so the extension works out of the box.
+ * Loads every configured addon manifest (cached). Cinemeta ships by default so
+ * browsing works out of the box; stream addons come from the user preferences.
  */
 export async function loadAddonManifests(): Promise<AddonManifestInfo[]> {
   const urls = await getConfiguredManifestUrls();
@@ -147,7 +146,7 @@ const QUALITY_PRIORITY: Record<string, number> = {
 const VIDEO_SIZE_PATTERN = /([0-9]+(?:\.[0-9]+)?)\s*(MB|GB|TB)/i;
 const PROVIDER_PATTERN = /(?:ThePirateBay|TorrentGalaxy|1337x|RARBG|NZBgeek|Bitlake|Orion)/;
 const SEEDER_PATTERN = /(?:(?:seeders?|peers?|leechers?)\s*[:=]?\s*([0-9]{1,6})|\b([0-9]{1,6})\s*(?:seeders?|peers?))/i;
-const TORRENTIO_SEEDER_PATTERN = /\?\?\s*([0-9]{1,6})\s*\?\?/i;
+const DOUBLE_MARK_SEEDER_PATTERN = /\?\?\s*([0-9]{1,6})\s*\?\?/i;
 
 export function enrichStream(addonName: string, stream: StreamObject): ResolvedStream {
   const title = stream.title ?? "";
@@ -221,9 +220,9 @@ export function parseSeeders(text?: string): number | null {
   if (!text) {
     return null;
   }
-  const torrentioMatch = text.match(TORRENTIO_SEEDER_PATTERN);
-  if (torrentioMatch) {
-    return Number.parseInt(torrentioMatch[1], 10);
+  const doubleMarkMatch = text.match(DOUBLE_MARK_SEEDER_PATTERN);
+  if (doubleMarkMatch) {
+    return Number.parseInt(doubleMarkMatch[1], 10);
   }
   const match = text.match(SEEDER_PATTERN);
   if (!match) {

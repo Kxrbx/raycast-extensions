@@ -2,20 +2,20 @@
 
 Search movies & series, browse catalogs and play streams from your Stremio setup — without leaving Raycast.
 
-![](metadata/search-stremio-1.png)
+![](metadata/browse-stremio-1.png)
 
 ## Features
 
 - **Search Movies & Series** — reactive search across millions of titles (powered by Cinemeta) with a live preview pane, top-result section and filters for type, genre, minimum IMDb rating and sorting. Recent searches are kept locally for one-keystroke replay.
 - **Browse Catalogs** — a poster gallery of popular, new and featured movies & series with genre/year filters and infinite pagination.
 - **Rich overview page** — cinematic backdrop, title logo, synopsis and a metadata panel (colored IMDb rating, genres, cast, director, country, awards). Jump to the trailer or IMDb in one action.
-- **Play in your favorite player** — streams are resolved from your configured addons (Torrentio by default) and played in VLC, mpv or any custom player through the local Stremio streaming server. No downloads, just press Enter.
+- **Play in your favorite player** — streams are resolved from the Stremio addons you configure and played in VLC, mpv or any custom player through the local Stremio streaming server. No downloads, just press Enter.
 - **Quick Navigation** — jump straight to Board, Library, Discover, Calendar or Addons in the Stremio desktop app, or push a search query to it.
 - **Server Status (menu bar)** — live indicator of the local Stremio streaming server: connection state, download speed, peers and streaming progress at a glance.
 
 ![](metadata/search-stremio-2.png)
 
-![](metadata/browse-stremio-1.png)
+![](metadata/search-stremio-1.png)
 
 ![](metadata/quick-navigation-1.png)
 
@@ -28,7 +28,7 @@ Search movies & series, browse catalogs and play streams from your Stremio setup
 
 1. Install the extension and open **Search Movies & Series**.
 2. If your Stremio streaming server does not run on the default `127.0.0.1:11470`, adjust the host/port in the extension preferences (press `Ctrl K` → *Configure Extension* from anywhere in the extension).
-3. Optional: add more addon manifest URLs (comma-separated) in *Additional Addon Manifests* to merge your own catalogs and stream sources alongside the built-in Cinemeta + Torrentio.
+3. Optional: add Stremio addon manifest URLs (comma-separated) in *Additional Addon Manifests* to merge your own catalogs and stream sources alongside the built-in Cinemeta catalogs. Adding the manifest of a stream addon enables playback.
 
 ## Preferences
 
@@ -54,4 +54,4 @@ Search movies & series, browse catalogs and play streams from your Stremio setup
 
 ## Disclaimer
 
-This extension is not affiliated with Stremio. It uses the public Cinemeta and Torrentio APIs and your locally installed Stremio streaming server. Please make sure your usage complies with the laws of your country.
+This extension is not affiliated with Stremio. It uses the public Cinemeta API, the addon manifests you configure and your locally installed Stremio streaming server. Please make sure your usage complies with the laws of your country.

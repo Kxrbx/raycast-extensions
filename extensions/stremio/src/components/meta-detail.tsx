@@ -170,7 +170,7 @@ export function MetaDetailView({ preview, episodeId }: MetaDetailViewProps) {
           {streams?.length === 0 && !error && (
             <List.EmptyView
               title="No streams available"
-              description="Install a stream addon in Stremio (e.g. Torrentio)."
+              description="Add a stream addon manifest in the extension preferences (Ctrl+K)."
             />
           )}
         </>
